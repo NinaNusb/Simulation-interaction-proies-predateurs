@@ -128,7 +128,7 @@ class Animal:
             self.se_deplacer(monde)
             deplacement_effectue = False #à verifier
         if self.chronon_to_breed > 3 and deplacement_effectue: #reproduction
-            monde.grille[ex_pos_x][ex_pos_y] = Fish(ex_pos_x, ex_pos_y)
+            monde.grille[ex_pos_x][ex_pos_y] = Requin(ex_pos_x, ex_pos_y)
             self.chronon_to_breed = 0
 
    
@@ -214,10 +214,7 @@ class Requin(Animal):
     
 
  
-mer= World(5, 5)
 
-
-mer.peupler(2, 1)
 
 mer.afficher_world()
 
@@ -237,6 +234,9 @@ print('---------------------------------------------------------------')
 """dans le main on va afficher monde et passer un jour """
 
 #tant qu'il y a encore des requins et des cases vides:
+
+mer= World(5, 5)
+mer.peupler(2, 1)
 
 while True:
     mer.passer_un_tour()
