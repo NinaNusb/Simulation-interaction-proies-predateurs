@@ -40,22 +40,11 @@ class World:
                 position_y = randint(0, self.hauteur_y -1)
             self.grille[position_y][position_x] = Requin(position_x, position_y) #potentielle erreur
         
- ### Garder l'un ou l'autre
-    def passer_un_jour(self, monde): #A TESTER
-        un_jour = 1
-        for ligne in monde.grille:
-            for case in ligne:
-                #while isinstance(case, Animal) in self.grille:
-                while case == None :  #ou '0' 
-                    monde.afficher_world()
-                else:
-                    None 
-        un_jour += 1
-                    
-    def passer_un_tour(self):
+  
+    def passer_un_jour(self):
         for ligne in self.grille:
             for case in ligne:
-                if isinstance(case, Fish):
+                if isinstance(case, Animal): #a verifier
                     case.vivre_une_journée(self)
                         
  
@@ -103,31 +92,18 @@ class Animal:
             mer.grille[ex_pos_y][ex_pos_x] = Animal(ex_pos_y, ex_pos_x)
         return True 
 
-#### Choisir l'un ou l'autre
-    def vivre_un_jour(self,monde):
-        for ligne in monde.grille:
-            for case in ligne:
-                if isinstance(case, Animal): 
-                    if self.breed == True: #si Animal a suffisamment de chronons (=3) alors appeler méthode breed sur Animal. 
-                        self.breed() 
-                    elif self.move == True: # si non, si cases adjacentes à Animal vides alors appeler méthode move sur Animal
-                        self.move()
-                    else: # si non, ANimal ne bouge pas / reste sur place
-                        None
-        self.chronon_to_breed += 1 #A TESTER
 
     def vivre_une_journée(self, monde): #à modifier
         ex_pos_x = self.position_x
         ex_pos_y = self.position_y
-        self.chronon_to_breed += 1
-        deplacement_effectue = True #à verifier
         if len(self.case_adjacente_libre(monde)) > 0:
             self.move(monde)
-            deplacement_effectue = False #à verifier
-        if self.chronon_to_breed > 3 and deplacement_effectue: #reproduction
+        if self.chronon_to_breed > 3: #reproduction
             monde.grille[ex_pos_x][ex_pos_y] = Requin(ex_pos_x, ex_pos_y)
             self.chronon_to_breed = 0
-
+        else:
+            self.move(monde)
+        self.chronon_to_breed += 1
    
         
 class Fish(Animal): #compteur manquant
@@ -140,7 +116,7 @@ class Requin(Animal): #compteur manquant
         self.energy = 7
 
 
-    def case_adjacente_occupée(self, monde): 
+    def poissons_adjacents(self, monde): 
         proies_possibles= []
         
         if type(monde.grille[(self.position_y+1) % monde.hauteur_y][self.position_x]) == Fish:
@@ -175,19 +151,16 @@ class Requin(Animal): #compteur manquant
     def vivre_une_journée(self, monde):
         ex_pos_x = self.position_x
         ex_pos_y = self.position_y
-        a_mange = False
-        deplacement_effectue = False
-        self.chronon_to_breed += 1
-        if len(self.case_adjacente_occupée(monde)):
-            self.move
+        if self.energy== 0: #énergie de vie du requin
+            monde.grille[ex_pos_x][ex_pos_y] = None
+        elif len(self.poissons_adjacents(monde))>0:
+            self.eat(monde)
             #a continuer avec correction
-        new_position = choice(self.case_adjacente_libre(mer))
-        self.position_x = new_position[0]
-        self.position_y = new_position[1]
-        mer.grille[self.position_y][self.position_x] = self
-        mer.grille[ex_pos_y][ex_pos_x] = None
-        self.energy -= 1 
-        print(self.energy)
+        elif len(Animal.case_adjacente_libre(monde))>0:
+            Animal.move(monde)
+            self.energy -= 1 
+            self.chronon_to_breed += 1
+        #si besoin ajouter compteur
 
 
     def breed(self):
@@ -199,48 +172,31 @@ class Requin(Animal): #compteur manquant
             self.position_y = new_position[1]
             mer.grille[self.position_y][self.position_x] = self
             mer.grille[ex_pos_y][ex_pos_x] = Requin(ex_pos_y, ex_pos_x)
-        #return True #à remettre?
+        
         
 
 
     
 
- 
 
 
-mer.afficher_world()
-
-print('-----------------------------------')
-Fish.chronon_to_breed = 2
-
-
-for ligne in mer.grille:
-    for case in ligne:
-        if isinstance(case, Fish):
-            case.breed()
-
-mer.afficher_world()
-print('---------------------------------------------------------------')
-
-
-"""dans le main on va afficher monde et passer un jour """
-
-#tant qu'il y a encore des requins et des cases vides:
-
-mer= World(5, 5)
-mer.peupler(2, 1)
+mer= World(15, 45)
+mer.peupler(15, 100)
 
 while True:
-    mer.passer_un_tour()
-    mer.afficher_monde()
-    sleep(0.2)
+#tant qu'il y a encore des requins et des cases vides:
+    
+    mer.passer_un_jour()
+    mer.afficher_world()
+    sleep(0.6)
     os.system("clear")
+    if len(Animal.case_adjacente_libre) > 0:
+        Animal.move()
+    if len(Requin.poissons_adjacents) > 0:
+        Requin.eat()
 
-if len(coup_possible) > 0:
-    Animal.move()
 
-if len(proies_possibles) > 0:
-    Requin.eat()
+
 
 
 
