@@ -1,8 +1,4 @@
-from random import randint
-from random import choice
-from tkinter import * 
-from pip import main
-from pkg_resources import Requirement
+from random import randint, choice
 import os 
 from time import sleep
 
@@ -32,19 +28,19 @@ class World:
         for _ in range(pop_fish):
             position_x = randint(0,self.largeur_x -1)
             position_y = randint(0, self.hauteur_y -1)
-            while self.grille[position_y][position_x] is not None: #pourquoi pas juste NONE ??
+            while self.grille[position_y][position_x] is not None: 
                 position_x = randint(0, self.largeur_x -1)
                 position_y = randint(0, self.hauteur_y -1)
             self.grille[position_y][position_x] = Fish(position_x, position_y) 
         for _ in range(pop_shark):
             position_x = randint(0,self.largeur_x -1)
             position_y = randint(0, self.hauteur_y -1)
-            while self.grille[position_y][position_x] is not None:
+            while self.grille[position_y][position_x] is not None: #potentielle erreur
                 position_x = randint(0, self.largeur_x -1)
                 position_y = randint(0, self.hauteur_y -1)
-            self.grille[position_y][position_x] = Requin(position_x, position_y)
+            self.grille[position_y][position_x] = Requin(position_x, position_y) #potentielle erreur
         
-
+ ### Garder l'un ou l'autre
     def passer_un_jour(self, monde): #A TESTER
         un_jour = 1
         for ligne in monde.grille:
@@ -62,7 +58,7 @@ class World:
                 if isinstance(case, Fish):
                     case.vivre_une_journée(self)
                         
-    #def chronon_to_breed 
+ 
           
 
 class Animal:
@@ -87,6 +83,7 @@ class Animal:
         return(coup_possible)
 
     def move(self, mer): 
+        #if len(coups_possibles) > 0:
         ex_pos_x = self.position_x
         ex_pos_y = self.position_y
         new_position = choice(self.case_adjacente_libre(mer))
@@ -106,7 +103,7 @@ class Animal:
             mer.grille[ex_pos_y][ex_pos_x] = Animal(ex_pos_y, ex_pos_x)
         return True 
 
-
+#### Choisir l'un ou l'autre
     def vivre_un_jour(self,monde):
         for ligne in monde.grille:
             for case in ligne:
@@ -119,53 +116,49 @@ class Animal:
                         None
         self.chronon_to_breed += 1 #A TESTER
 
-    def vivre_une_journée(self, monde):
+    def vivre_une_journée(self, monde): #à modifier
         ex_pos_x = self.position_x
         ex_pos_y = self.position_y
         self.chronon_to_breed += 1
         deplacement_effectue = True #à verifier
         if len(self.case_adjacente_libre(monde)) > 0:
-            self.se_deplacer(monde)
+            self.move(monde)
             deplacement_effectue = False #à verifier
         if self.chronon_to_breed > 3 and deplacement_effectue: #reproduction
             monde.grille[ex_pos_x][ex_pos_y] = Requin(ex_pos_x, ex_pos_y)
             self.chronon_to_breed = 0
 
    
-    """def mort (self,monde):
-        if case.fish == case.requin:
-            self.destroy()"""
         
-class Fish(Animal):
-    pass
-    """def __init__(self, position_x, position_y):
-        super().__init__(position_x, position_y)"""
+class Fish(Animal): #compteur manquant
+    def __init__(self, position_x, position_y):
+        super().__init__(position_x, position_y)
 
-class Requin(Animal):
+class Requin(Animal): #compteur manquant
     def __init__(self, position_x, position_y):
         super().__init__(position_x, position_y)
         self.energy = 7
 
 
-    def case_adjacente_occupée(self, monde): #A TESTER
-        coup_possible = []
+    def case_adjacente_occupée(self, monde): 
+        proies_possibles= []
         
         if type(monde.grille[(self.position_y+1) % monde.hauteur_y][self.position_x]) == Fish:
-            coup_possible.append((self.position_x, (self.position_y +1) % monde.hauteur_y))
+            proies_possibles.append((self.position_x, (self.position_y +1) % monde.hauteur_y))
 
         if type(monde.grille[(self.position_y-1)% monde.hauteur_y][self.position_x]) == Fish:
-            coup_possible.append((self.position_x, (self.position_y -1) % monde.hauteur_y))
+            proies_possibles.append((self.position_x, (self.position_y -1) % monde.hauteur_y))
 
         if type(monde.grille[self.position_y][(self.position_x+1) % monde.largeur_x]) == Fish:
-            coup_possible.append(((self.position_x+1) % monde.largeur_x, self.position_y))
+            proies_possibles.append(((self.position_x+1) % monde.largeur_x, self.position_y))
 
         if type(monde.grille[self.position_y][(self.position_x-1) % monde.largeur_x]) == Fish:
-            coup_possible.append(((self.position_x-1) % monde.largeur_x, self.position_y))
-        return(coup_possible)
+            proies_possibles.append(((self.position_x-1) % monde.largeur_x, self.position_y))
+        return(proies_possibles)
     
     
 
-    def move(self, mer): #A TESTER
+    def eat(self, mer): #A TESTER
         #le requin regarde les 4 position adjacentes et si il ya un poisson il le tue
         #food = self.case_adjacente_occupée 
         #if food == True:
@@ -177,7 +170,6 @@ class Requin(Animal):
         mer.grille[self.position_y][self.position_x] = self
         mer.grille[shark_pos_y][shark_pos_x] = None
         self.energy += 3
-        print(self.energy)
             
     
     def vivre_une_journée(self, monde):
@@ -211,28 +203,6 @@ class Requin(Animal):
         
 
 
-    
-
- 
-
-
-mer.afficher_world()
-
-print('-----------------------------------')
-Fish.chronon_to_breed = 2
-
-
-for ligne in mer.grille:
-    for case in ligne:
-        if isinstance(case, Fish):
-            case.breed()
-
-mer.afficher_world()
-print('---------------------------------------------------------------')
-
-
-"""dans le main on va afficher monde et passer un jour """
-
 #tant qu'il y a encore des requins et des cases vides:
 
 mer= World(5, 5)
@@ -244,7 +214,11 @@ while True:
     sleep(0.2)
     os.system("clear")
 
+if len(coup_possible) > 0:
+    Animal.move()
 
+if len(proies_possibles) > 0:
+    Requin.eat()
 
 
 
