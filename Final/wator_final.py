@@ -203,6 +203,28 @@ class Requin(Animal): #compteur manquant
         
 
 
+    
+
+ 
+
+
+mer.afficher_world()
+
+print('-----------------------------------')
+Fish.chronon_to_breed = 2
+
+
+for ligne in mer.grille:
+    for case in ligne:
+        if isinstance(case, Fish):
+            case.breed()
+
+mer.afficher_world()
+print('---------------------------------------------------------------')
+
+
+"""dans le main on va afficher monde et passer un jour """
+
 #tant qu'il y a encore des requins et des cases vides:
 
 mer= World(5, 5)
