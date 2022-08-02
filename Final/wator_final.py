@@ -189,8 +189,8 @@ class Requin(Animal):
 
 
 
-mer= World(15, 30)
-mer.peupler(30, 150)
+mer= World(10,20)
+mer.peupler(80, 15)
 max_fish = 0
 max_requin = 0
 
@@ -202,9 +202,7 @@ while Fish.compteur != 0 and Requin.compteur != 0:
  
     mer.passer_un_jour()
     mer.afficher_world()
-    print ("----------------------------------------")
-    print ("----------------------------------------")
-
+   
     sleep(1)
     os.system("clear")
 
