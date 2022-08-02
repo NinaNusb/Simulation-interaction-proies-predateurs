@@ -21,7 +21,7 @@ class World:
                 elif isinstance(case, Requin):
                     str_ligne += ' 2 '
                 else:
-                    str_ligne += ' - '
+                    str_ligne += ' 0 '
             print(str_ligne)
 
     def peupler(self, pop_fish, pop_shark): #rajouter condition 'pas l'un sur l'autre'
@@ -189,8 +189,8 @@ class Requin(Animal):
 
 
 
-mer= World(10,20)
-mer.peupler(80, 15)
+mer= World(15, 30)
+mer.peupler(30, 150)
 max_fish = 0
 max_requin = 0
 
@@ -202,11 +202,8 @@ while Fish.compteur != 0 and Requin.compteur != 0:
  
     mer.passer_un_jour()
     mer.afficher_world()
-   
+    print ("----------------------------------------")
+    print ("----------------------------------------")
+
     sleep(1)
     os.system("clear")
-
-
-
-
-
