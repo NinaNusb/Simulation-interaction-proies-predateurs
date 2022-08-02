@@ -17,7 +17,7 @@ Les poissons:
  
 Les requins:
   1. **se nourrissent** des proies adjacentes, ce qui leur procurent de l'énergie
-  2. **se déplacent** suivant les mêmes critères que les poissons mais perdent des chronons à chaque tour
+  2. **se déplacent** suivant les mêmes critères que les poissons mais perdent des unités d'énergie à chaque tour
   3. **se reproduisent** aussi de la même façon 
   
 Le programme se termine dès que l'une ou l'autre population est éteinte.
