@@ -8,7 +8,7 @@ Il s'agit d'un algorithme permettant d'observer le comportement d'une population
 - Python, en particulier la Programmation Orientée Objet (POO)
 
 ## Démarrage
-Exécutez le programme avec **VSCODE**. Vous pourrez observer dans la console la création d'une mer suivant des dimensions qui peuvent varier, dans laquelle interagissent la population de **proies (notée 1)** avec la population de **prédateurs (notée 2)**. Les '**O**' représent les **cases vides**, c'est-à-dire de l'eau.
+Exécutez le programme avec **VSCODE**. Vous pourrez observer dans la console la création d'une mer suivant des dimensions qui peuvent varier, dans laquelle interagissent la population de **proies (notée 1)** avec la population de **prédateurs (notée 2)**. Les '**-**' représent les **cases vides**, c'est-à-dire de l'eau.
 
 ## Comprendre les différents comportements
 Les poissons:
